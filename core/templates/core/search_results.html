@@ -1,0 +1,239 @@
+{% extends "core/base.html" %}
+{% block content %}
+<style>
+    .search-results-container {
+        padding: 120px 0 60px;
+        background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+    }
+    
+    .search-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .search-header h2 {
+        font-size: 2.5rem;
+        color: #1d1d1f;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    .search-underline {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #007aff, #00c7ff);
+        margin: 0 auto;
+    }
+    
+    .product-card {
+        background: #ffffff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 30px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .product-image {
+        position: relative;
+        overflow: hidden;
+        height: 300px;
+        background: #fff;
+    }
+    
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 20px;
+        transition: transform 0.5s ease;
+    }
+    
+    .hover-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+    
+    .product-card:hover .hover-overlay {
+        opacity: 1;
+    }
+    
+    .product-info {
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .product-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #1d1d1f;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .product-description {
+        color: #86868b;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        flex-grow: 1;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .price-section {
+        margin-bottom: 20px;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .original-price {
+        color: #86868b;
+        text-decoration: line-through;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .discounted-price {
+        color: #007aff;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    .view-details-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 25px;
+        background: linear-gradient(to right, #007aff, #00c7ff);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin: 0 auto;
+    }
+    
+    .view-details-btn i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+    
+    .view-details-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+        color: #ffffff;
+    }
+    
+    .view-details-btn:hover i {
+        transform: translateX(5px);
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 60px 0;
+    }
+    
+    .no-results i {
+        font-size: 3rem;
+        color: #86868b;
+        margin-bottom: 20px;
+    }
+    
+    .no-results h3 {
+        font-size: 1.8rem;
+        color: #1d1d1f;
+        margin-bottom: 10px;
+    }
+    
+    .no-results p {
+        color: #86868b;
+        font-size: 1.1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .search-header h2 {
+            font-size: 2rem;
+        }
+        
+        .product-card {
+            margin-bottom: 20px;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+        }
+        
+        .product-image {
+            height: 250px;
+        }
+    }
+</style>
+
+<div class="search-results-container">
+    <div class="search-header">
+        <h2>Search Results for "{{ query }}"</h2>
+        <div class="search-underline"></div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            {% if apples %}
+                {% for apple in apples %}
+                    <div class="col-md-4 mb-4">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="{{ apple.device_image.url }}" alt="{{ apple.name }}">
+                                <div class="hover-overlay"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ apple.name }}</h3>
+                                <p class="product-description">{{ apple.small_description|truncatechars:100 }}</p>
+                                <div class="price-section">
+                                    <span class="original-price">₹{{ apple.original_price }}</span>
+                                    <span class="discounted-price">₹{{ apple.discounted_price }}</span>
+                                </div>
+                                <a href="{% url 'appledetails' apple.id %}" class="view-details-btn">
+                                    View Details
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No Results Found</h3>
+                        <p>We couldn't find any products matching your search "{{ query }}"</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

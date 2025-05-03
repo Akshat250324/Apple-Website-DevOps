@@ -1,0 +1,281 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'profile' %}" class="nav-link active">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'changepassword' %}" class="nav-link">
+                        <i class="fas fa-lock"></i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url "order" %}" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url "index" %}" class="nav-link">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url "address" %}" class="nav-link">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Address</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="profile-container">
+            <header class="profile-header">
+                <h1>My Profile</h1>
+                <p>Manage your personal information</p>
+            </header>
+
+            <div class="profile-form-wrapper">
+                <form method="POST" novalidate class="profile-form">
+                    {% csrf_token %}
+
+                    {% if mf.non_field_errors %}
+                        <div class="error-box">
+                            {% for error in mf.non_field_errors %}
+                                <p class="error-message">{{error}}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for field in mf %}
+                    <div class="form-group">
+                        {{field.label_tag}}
+                        {{field}}
+                        {% if field.errors %}
+                            <div class="field-error">{{field.errors}}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+
+                {% if messages %}
+                <div class="messages-wrapper">
+                    {% for message in messages %}
+                        <div class="alert-message {{message.tags}}">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #3b82f6;
+    --accent-color: #6366f1;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --bg-gradient: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}
+
+.dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    gap: 40px;
+    padding: 40px;
+}
+
+/* Sidebar Styles */
+.dashboard-sidebar {
+    position: sticky;
+    top: 40px;
+    height: fit-content;
+}
+
+.sidebar-nav {
+    background: var(--bg-gradient);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1);
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-link i {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.nav-link span {
+    font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Main Content Styles */
+.dashboard-main {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+}
+
+.profile-header {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.profile-header h1 {
+    font-size: 2.4rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.profile-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.profile-form {
+    max-width: 800px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.field-error {
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: var(--bg-gradient);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.alert-message {
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.alert-message.success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #dcfce7;
+}
+
+.alert-message.error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fee2e2;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-wrapper {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .dashboard-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-main {
+        padding: 25px;
+    }
+
+    .profile-header h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock content %}

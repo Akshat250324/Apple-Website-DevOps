@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}iPad Categories{% endblock title %}
+
+{% block content %}
+<div class="gadget-sections">
+    <div class="headline-banner">
+        <h1>iPad Models</h1>
+        <p>Choose your perfect iPad</p>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="device-showcase">
+            {% for ic in ic %}
+                <a href="{% url 'appledetails' ic.id %}" class="device-card {% if ic.stock == 0 %}out-of-stock{% endif %}">
+                    <div class="image-container">
+                        <img src="{{ ic.device_image.url|default:'path/to/placeholder_image.jpg' }}" alt="{{ ic.name }}">
+                    </div>
+                    <div class="details-box">
+                        <h2>{{ ic.name }}</h2>
+
+                        <!-- Stock Status Display -->
+                        {% if ic.stock > 0 %}
+                            <p class="stock-status in-stock">In Stock</p>
+                        {% else %}
+                            <p class="stock-status out-of-stock">Out of Stock</p>
+                        {% endif %}
+
+                        <div class="pricing-container">
+                            <div class="pricing-details">
+                                <span class="current-cost">${{ ic.discounted_price|floatformat:2 }}</span>
+                                <span class="original-cost">${{ ic.original_price|floatformat:2 }}</span>
+                            </div>
+
+                            {% if ic.discount_percent > 0 %}
+                                <span class="sale-badge">{{ ic.discount_percent }}% OFF</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

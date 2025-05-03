@@ -1,0 +1,384 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<style>
+    .checkout-container {
+        padding: 50px;
+        background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+        min-height: 100vh;
+    }
+
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .summary-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .summary-header {
+        padding: 30px;
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .summary-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+        background-size: 20px 20px;
+        opacity: 0.3;
+    }
+
+    .summary-header h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        position: relative;
+    }
+
+    .summary-content {
+        padding: 35px;
+    }
+
+    .summary-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .summary-table th {
+        padding: 20px;
+        font-weight: 600;
+        color: #64748b;
+        border-bottom: 2px solid #e2e8f0;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    .summary-table td {
+        padding: 20px;
+        color: #334155;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 1.05rem;
+        vertical-align: middle;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .product-info img {
+        width: 80px;  /* Increased image size */
+        height: 80px;  /* Increased image size */
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .subtotal-row td,
+    .shipping-row td,
+    .total-row td {
+        padding-top: 25px;
+        font-weight: 600;
+    }
+
+    .total-row {
+        font-size: 1.2rem;
+        color: #3b82f6;
+    }
+
+    .total-row i {
+        font-size: 1.8rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .address-selection {
+        padding: 30px;
+    }
+
+    .address-selection h2 {
+        margin-bottom: 35px;
+        color: #1e293b;
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    .address-form {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .address-card {
+        display: block;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        border: 2px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .address-card:hover {
+        border-color: #3b82f6;
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+    }
+
+    .address-card input[type="radio"] {
+        margin-right: 15px;
+        transform: scale(1.2);
+        accent-color: #3b82f6;
+    }
+
+    .address-content {
+        margin-left: 35px;
+    }
+
+    .address-content h3 {
+        margin: 0 0 20px 0;
+        color: #1e293b;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .address-details p {
+        margin: 8px 0;
+        color: #64748b;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+
+    .payment-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px;
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .payment-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        transition: 0.5s;
+    }
+
+    .payment-button:hover::before {
+        left: 100%;
+    }
+
+    .payment-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+    }
+
+    @media (max-width: 1200px) {
+        .checkout-container {
+            padding: 30px;
+        }
+
+        .checkout-grid {
+            gap: 30px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .checkout-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .checkout-container {
+            padding: 15px;
+        }
+
+        .summary-table {
+            font-size: 0.9rem;
+        }
+
+        .summary-content,
+        .address-card {
+            padding: 20px;
+        }
+
+        .payment-button {
+            padding: 16px;
+            font-size: 1.1rem;
+        }
+    }
+    /* Styling for the 'No Address Added' message */
+.no-address-message {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    color: #721c24;
+    font-size: 16px;
+}
+
+.no-address-message p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Add Address button styling */
+.add-address-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.add-address-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+{% block title %}Checkout{% endblock title %}
+<div class="checkout-container">
+    <div class="checkout-grid">
+
+        <!-- Order Summary Section -->
+        <div class="order-summary">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2>Order Summary</h2>
+                </div>
+                <div class="summary-content">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        <img src="{{ item.product.device_image.url }}" alt="{{ item.product.name }}">
+                                        {{ item.product.name }}
+                                    </div>
+                                </td>
+                                <td>${{ item.product.discounted_price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.product.price_and_quantity_total }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="subtotal-row">
+                                <td colspan="2"></td>
+                                <td>Subtotal</td>
+                                <td>${{ total }}</td>
+                            </tr>
+                            <tr class="shipping-row">
+                                <td colspan="2"></td>
+                                <td>Shipping</td>
+                                <td>$0</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="2"><i class="fa fa-barcode"></i></td>
+                                <td>Total</td>
+                                <td>${{ final_price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Selection Section -->
+        <div class="address-selection">
+            <h2>Delivery Address</h2>
+
+            {% if address %}
+            <form action="{% url 'payment' %}" method="POST" class="address-form">
+                {% csrf_token %}
+                {% for add in address %}
+                <label class="address-card">
+                    <input type="radio" name="selected_address" value="{{ add.id }}" {% if forloop.first %}checked{% endif %}>
+                    <div class="address-content">
+                        <h3>{{ add.name }}</h3>
+                        <div class="address-details">
+                            <p>{{ add.address }}</p>
+                            <p>{{ add.city }}, {{ add.state }}</p>
+                            <p>{{ add.pincode }}</p>
+                        </div>
+                    </div>
+                </label>
+                {% endfor %}
+                
+                <button type="submit" class="payment-button">
+                    Proceed to Payment
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            {% else %}
+            <div class="no-address-message">
+                <p>No address added. Please add an address first.</p>
+                <a href="{% url 'address' %}" class="add-address-button">Add Address</a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

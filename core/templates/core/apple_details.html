@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+
+{% block title %}Apple Details{% endblock title %}
+
+{% block content %}
+<div class="product-details-page">
+    <div class="product-wrapper">
+        <div class="image-container">
+            <div class="image-showcase">
+                <img src="{{ ic.device_image.url }}" alt="{{ ic.name }}">
+            </div>
+        </div>
+        <div class="details-section">
+            <h1 class="product-title">{{ ic.name }}</h1>
+            <div class="short-description">{{ ic.small_description }}</div>
+
+            {% if messages %}
+                <div class="message-container">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="price-display">
+                <div class="price-info">
+                    <span class="current-price">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>{{ ic.discounted_price }}$
+                    </span>
+                    <span class="previous-price">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>{{ ic.original_price }}$
+                    </span>
+                    <span class="discount-tag">{{ discount_percent }}% OFF</span>
+                </div>
+            </div>
+
+            <div class="purchase-options">
+                {% if ic.stock > 0 %}
+                    {% if is_in_cart %}
+                        <a href="{% url 'viewcart' %}" class="cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Go to Cart
+                        </a>
+                    {% else %}
+                        <a href="{% url 'addtocart' ic.id %}" class="cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'buynow' ic.id %}" class="buy-btn">
+                        <i class="fas fa-bolt"></i> Buy Now
+                    </a>
+                {% else %}
+                    <div class="out-of-stock-message" style="color: red; font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
+                        This product will be available soon.
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="additional-details">
+                <h2>Product Details</h2>
+                <div class="description">{{ ic.description }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

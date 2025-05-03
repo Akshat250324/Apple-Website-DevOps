@@ -1,0 +1,119 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<style>
+  /* General Container for the Confirmation Page */
+  .confirmation-container {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+  }
+  
+  /* Success Message Style */
+  .success-message {
+      font-size: 36px;
+      font-weight: 700;
+      color: #28a745;
+      margin-bottom: 20px;
+  }
+  
+  /* Card Container for Order Confirmation */
+  .confirmation-card {
+      width: 100%;
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 40px;
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+  }
+  
+  /* Circle with Check Icon */
+  .checkmark-circle {
+      display: inline-block;
+      background-color: #28a745;
+      border-radius: 50%;
+      padding: 25px;
+      margin-bottom: 30px;
+  }
+  
+  .check-icon {
+      font-size: 50px;
+      color: white;
+      font-weight: bold;
+  }
+  
+  /* Heading for Order Confirmation */
+  .order-status {
+      font-size: 30px;
+      font-weight: 600;
+      color: #333;
+      margin-top: 20px;
+  }
+  
+  /* Order Message */
+  .order-message {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+      margin: 30px 0;
+  }
+  
+  /* Action Button for Continue Shopping */
+  .action-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 15px 35px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease;
+  }
+  
+  .action-btn:hover {
+      background-color: #218838;
+  }
+  
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+      .confirmation-card {
+          padding: 30px;
+      }
+  
+      .success-message {
+          font-size: 30px;
+      }
+  
+      .order-status {
+          font-size: 26px;
+      }
+  
+      .action-btn {
+          font-size: 16px;
+          padding: 12px 30px;
+      }
+  }
+  
+</style>
+
+<div class="confirmation-container">
+  <h1 class="success-message">Payment Successful</h1>
+</div>
+
+<div class="confirmation-card">
+  <div class="checkmark-circle">
+    <i class="check-icon">✓</i>
+  </div>
+  <h1 class="order-status">Order Confirmed</h1>
+  <p class="order-message">We've received your order<br>and will process it shortly.<br>Thank you for shopping with us!</p>
+  <a href="{% url 'index' %}">
+    <button type="button" class="action-btn">Continue Shopping</button>
+  </a>
+</div>
+
+{% endblock content %}

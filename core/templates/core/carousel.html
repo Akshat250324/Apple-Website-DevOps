@@ -1,0 +1,173 @@
+{% load static %}
+<div class="video-hero">
+    <div class="video-wrapper">
+        <video class="background-video" autoplay muted loop playsinline>
+            <source src="https://www.apple.com/105/media/ww/iphone/family/2025/e7ff365a-cb59-4ce9-9cdf-4cb965455b69/anim/welcome3/xlarge_2x.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay">
+            <h1>Apple</h1>
+            <p>Where innovation meets elegance</p>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Product Grid -->
+    <div class="container my-5">
+        <div class="product-grid">
+            <!-- iPhone 16 Pro -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16pro__erw9alves2qa_xlarge_2x.png" alt="iPhone 16 Pro">
+                </div>
+                <h3>iPhone Series</h3>
+                <div class="buttons">
+                    <a href="{% url 'iphonecategories' %}" class="learn-more">Learn more</a>
+                </div>
+            </div>
+<!-- MacBook Air M2 -->
+
+<div class="product-card">
+
+    <div class="product-image">
+    
+    <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mac-card-40-macbook-air-202503?wid=680&hei=528&fmt=p-jpg&qlt=95&.v=1739592123040" alt="MacBook Air M2">
+    
+    </div>
+    
+    <h3>MacBook Air M2</h3>
+    
+    <div class="buttons">
+    
+    <a href="{% url "macbookcategories" %}" class="learn-more">Learn more</a>
+    
+    </div>
+    
+    </div>
+
+            <!-- iPhone SE -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://www.apple.com/assets-www/en_WW/ipad/product_tile/medium/ipad_pro_ce478c16f.png" alt="iPad">
+                </div>
+                <h3>iPad Series</h3>
+                <div class="buttons">
+                    <a href="{% url "ipadcategories" %}" class="learn-more">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="why-apple">
+    <div class="hero-banner">
+        <h1>Why Choose Apple</h1>
+        <p>Innovation meets excellence in every product Apple create</p>
+    </div>
+
+    <div class="container">
+        <!-- Innovation Section -->
+        <div class="feature-block">
+            <div class="feature-content">
+                <h2>Unmatched Innovation</h2>
+                <p>Every Apple product is designed with groundbreaking technology that sets new industry standards. From the powerful A18 Pro chip to the revolutionary Dynamic Island, we're constantly pushing the boundaries of what's possible.</p>
+            </div>
+            <div class="feature-image">
+                <img src="{% static 'core/images/A18.jpg' %}" alt="Apple A18 Pro chip" class="small-img">
+            </div>
+        </div>
+
+        <!-- Design Section -->
+        <div class="feature-block reverse">
+            <div class="feature-content">
+                <h2>Iconic Design</h2>
+                <p>Crafted from premium materials like aerospace-grade titanium and Ceramic Shield glass, our devices aren't just tools – they're masterpieces of design that feel perfect in your hands.</p>
+            </div>
+            <div class="feature-image">
+                <img src="{% static "core/images/design.png" %}" alt="Apple Design">
+            </div>
+        </div>
+
+        <!-- Ecosystem Section -->
+        <div class="feature-block">
+            <div class="feature-content">
+                <h2>Seamless Ecosystem</h2>
+                <p>Experience the magic of devices that work perfectly together. From AirDrop to Handoff, your iPhone, iPad, and Mac work in harmony to make your life easier.</p>
+            </div>
+            <div class="feature-image">
+                <img src="{% static "core/images/Z.png" %}" alt="Apple Ecosystem">
+            </div>
+        </div>
+
+       {% comment %} ============================== {% endcomment %}
+    
+   
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">2B+</span>
+                <span class="stat-text">Active Devices Worldwide</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">96%</span>
+                <span class="stat-text">Customer Satisfaction</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">175</span>
+                <span class="stat-text">Countries Served</span>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Privacy First</h3>
+                <p>Your personal data stays private. Advanced security features protect your information across all devices.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-clock"></i>
+                <h3>Long-lasting Value</h3>
+                <p>Apple products retain their value longer and receive software updates for years, making them a smart investment.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-headset"></i>
+                <h3>24/7 Support</h3>
+                <p>Get expert help anytime through Apple Care, Genius Bar, or our extensive support resources.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-leaf"></i>
+                <h3>Environmental Focus</h3>
+                <p>Committed to becoming carbon neutral by 2030, using recycled materials and renewable energy.</p>
+            </div>
+        </div>
+
+        <!-- Testimonial Section -->
+        <div class="testimonials">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"The seamless integration between my iPhone and MacBook has transformed how I work."</p>
+                    <span class="author">- Sarah J.</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Apple's commitment to privacy gives me peace of mind in today's digital world."</p>
+                    <span class="author">- Michael R.</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The quality and durability of Apple products is unmatched. Worth every penny."</p>
+                    <span class="author">- David L.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2>Experience the Apple Difference</h2>
+            <p>Join millions of satisfied customers worldwide</p>
+            <a href="#" class="cta-button">Explore Products</a>
+        </div>
+    </div>
+</section>
+

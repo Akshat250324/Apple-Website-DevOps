@@ -1,0 +1,459 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<br>
+
+<style>
+    .wrapper-container {
+        display: grid;
+        grid-template-columns: 280px 1fr 380px;
+        gap: 35px;
+        padding: 50px;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+    }
+    
+    /* Side Navigation Styles */
+    .side-navigation {
+        position: sticky;
+        top: 30px;
+        height: fit-content;
+    }
+    
+    .menu-box {
+        background: white;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+        backdrop-filter: blur(10px);
+    }
+    
+    .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .menu-link {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        color: #464c66;
+        text-decoration: none;
+        border-radius: 14px;
+        margin-bottom: 12px;
+        font-weight: 500;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .menu-link i {
+        margin-right: 15px;
+        width: 24px;
+        font-size: 1.2rem;
+        color: #6b7280;
+        transition: all 0.4s ease;
+    }
+    
+    .menu-link:hover, .active-page {
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        color: white;
+        transform: translateX(5px);
+    }
+    
+    .menu-link:hover i, .active-page i {
+        color: white;
+    }
+    
+    /* Main Content Styles */
+    .content-wrapper {
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+    }
+    
+    .section-heading {
+        font-size: 2.2rem;
+        color: #1f2937;
+        margin-bottom: 35px;
+        font-weight: 700;
+    }
+    
+    .product-card {
+        display: flex;
+        align-items: center;
+        padding: 25px;
+        background: #f9fafb;
+        border-radius: 20px;
+        margin-bottom: 25px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(229, 231, 235, 0.5);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(8, 17, 66, 0.08);
+        border-color: transparent;
+    }
+    
+    .image-box {
+        width: 140px;
+        height: 140px;
+        margin-right: 30px;
+        padding: 15px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 20px rgba(8, 17, 66, 0.04);
+    }
+    
+    .product-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.4s ease;
+    }
+    
+    .product-card:hover .product-thumbnail {
+        transform: scale(1.05);
+    }
+    
+    .product-description {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+    }
+    
+    .product-name {
+        font-size: 1.3rem;
+        color: #1f2937;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .action-group {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+    
+    .quantity-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: white;
+        padding: 10px 18px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(8, 17, 66, 0.04);
+    }
+    
+    .quantity-control {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3f4f6;
+        border-radius: 10px;
+        color: #4b5563;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .quantity-control:hover {
+        background: #4f46e5;
+        color: white;
+    }
+    
+    .quantity-value {
+        font-weight: 600;
+        color: #1f2937;
+        min-width: 30px;
+        text-align: center;
+    }
+    
+    .price-box {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #4f46e5;
+        min-width: 120px;
+        text-align: right;
+    }
+    
+    .delete-item {
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        background: #fee2e2;
+    }
+    
+    .delete-item:hover {
+        background: #ef4444;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    /* Summary Container Styles */
+    .summary-container {
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+        position: sticky;
+        top: 30px;
+        height: fit-content;
+    }
+    
+    .summary-title {
+        font-size: 1.6rem;
+        color: #1f2937;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
+    
+    .summary-content {
+        padding: 25px;
+        background: #f9fafb;
+        border-radius: 20px;
+        border: 1px solid rgba(229, 231, 235, 0.5);
+    }
+    
+    .summary-entry {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+    
+    .summary-line {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 25px 0;
+        border: none;
+    }
+    
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        font-weight: 500;
+        color: #374151;
+    }
+    
+    .final-summary {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #4f46e5;
+        margin-top: 20px;
+    }
+    
+    .checkout-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 14px;
+        margin-top: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .checkout-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1400px) {
+        .wrapper-container {
+            grid-template-columns: 250px 1fr 350px;
+            padding: 30px;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .wrapper-container {
+            grid-template-columns: 220px 1fr 320px;
+            padding: 25px;
+            gap: 25px;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        .wrapper-container {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .side-navigation, .summary-container {
+            position: static;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .wrapper-container {
+            padding: 15px;
+        }
+    
+        .product-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .image-box {
+            margin: 0 0 20px 0;
+        }
+        
+        .product-description {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .action-group {
+            flex-direction: column;
+            width: 100%;
+        }
+    
+        .quantity-container {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .price-box {
+            text-align: center;
+        }
+    }
+</style>
+
+<br>
+
+<div class="wrapper-container">
+    <!-- Left Navigation -->
+    <aside class="side-navigation">
+        <nav class="menu-box" aria-label="User Dashboard Navigation">
+            <ul class="menu-list">
+                <li><a href="{% url 'profile' %}" class="menu-link active-page" aria-current="page">
+                    <i class="fas fa-user" aria-hidden="true"></i> <span>Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'changepassword' %}" class="menu-link">
+                    <i class="fas fa-lock" aria-hidden="true"></i> <span>Change Password</span>
+                </a></li>
+                <li><a href="{% url "order" %}" class="menu-link">
+                    <i class="fas fa-shopping-bag" aria-hidden="true"></i> <span>Orders</span>
+                </a></li>
+                <li><a href="{% url 'viewcart' %}" class="menu-link">
+                    <i class="fas fa-shopping-cart" aria-hidden="true"></i> <span>Cart</span>
+                </a></li>
+                <li><a href="{% url "address" %}" class="menu-link">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i> <span>Address</span>
+                </a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-wrapper">
+        <!-- Display messages for cart actions -->
+        {% if messages %}
+            <div class="message-container">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <header>
+            <h1 class="section-heading">Shopping Cart</h1>
+        </header>
+        
+        <div class="product-container" role="list">
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <article class="product-card" role="listitem">
+                    <div class="image-box">
+                        <img src="{{ item.product.device_image.url }}" alt="{{ item.product.name }}" class="product-thumbnail">
+                    </div>
+                    <div class="product-description">
+                        <h2 class="product-name">{{ item.product.name }}</h2>
+                        <div class="action-group">
+                            <div class="quantity-container" role="group" aria-label="Quantity controls">
+                                <a href="{% url 'delete_quantity' item.id %}" class="quantity-control minus" aria-label="Decrease quantity">
+                                    <i class="fas fa-minus" aria-hidden="true"></i>
+                                </a>
+                                <span class="quantity-value" aria-label="Current quantity">{{ item.quantity }}</span>
+                                <a href="{% url 'add_quantity' item.id %}" class="quantity-control plus" aria-label="Increase quantity">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="price-box" aria-label="Total price of item">${{ item.price_and_quantity_total }}</div>
+                            <a href="{% url 'deletecart' item.id %}" class="delete-item" aria-label="Remove {{ item.product.name }} from cart">
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            {% else %}
+                <p class="empty-cart-message" style="font-size: 1.2rem; padding: 2rem; color: #888;">
+                    🛒 Your cart is currently empty.
+                </p>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Order Summary -->
+    {% if cart_items %}
+    <aside class="summary-container">
+        <h2 class="summary-title">Order Summary</h2>
+        <div class="summary-content">
+            {% for item in cart_items %}
+            <div class="summary-entry">
+                <span class="entry-name">{{ item.product.name }}</span>
+                <div class="summary-details">
+                    <span class="entry-calculation">${{ item.product.discounted_price }} × {{ item.quantity }}</span>
+                    <span class="entry-total">${{ item.price_and_quantity_total }}</span>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <hr class="summary-line" aria-hidden="true">
+            
+            <div class="total-summary">
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span class="subtotal-amount">${{ total }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Shipping</span>
+                    <span class="shipping-cost">0</span>
+                </div>
+                <div class="summary-item final-summary">
+                    <span>Total</span>
+                    <span class="total-amount">${{ final_price }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{% url 'checkout' %}" class="checkout-link">
+            <span>Proceed to Checkout</span>
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+    </aside>
+    {% endif %}
+</div>
+{% endblock content %}
+
+
+

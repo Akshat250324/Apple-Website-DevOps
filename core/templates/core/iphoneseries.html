@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="iphone-section">
+    <div class="container">
+        <div class="iphone-grid">
+            
+            <!-- iPhone 16 Pro -->
+            <div class="iphone-card">
+                <div class="iphone-image">
+                    <img src="https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16pro__erw9alves2qa_xlarge_2x.png" alt="iPhone 16 Pro">
+                </div>
+                <div class="color-options">
+                    <span class="color beige"></span>
+                    <span class="color gold"></span>
+                    <span class="color black"></span>
+                    <span class="color white"></span>
+                </div>
+                <h3>iPhone 16 Pro</h3>
+                <p class="description">The ultimate iPhone.</p>
+                <p class="price">From ₹119900.00*<br>or ₹4912.00/mo. for 24 mo.‡</p>
+                <div class="buttons">
+                    <a href="{% url "iphone16pro" %}" class="learn-more">Learn more</a>
+                </div>
+            </div>
+
+            <!-- iPhone 16 -->
+            <div class="iphone-card">
+                <div class="iphone-image">
+                    <img src="https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16__c5bvots96jee_xlarge_2x.png" alt="iPhone 16">
+                </div>
+                <div class="color-options">
+                    <span class="color blue"></span>
+                    <span class="color pink"></span>
+                    <span class="color white"></span>
+                    <span class="color black"></span>
+                </div>
+                <h3>iPhone 16</h3>
+                <p class="description">A total powerhouse.</p>
+                <p class="price">From ₹79900.00*<br>or ₹3162.00/mo. for 24 mo.‡</p>
+                <div class="buttons">
+                    <a href="#" class="learn-more">Learn more</a>
+                </div>
+            </div>
+
+            <!-- iPhone 16e -->
+            <div class="iphone-card">
+                <div class="iphone-image">
+                    <img src="https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16e__cubm3xoy5qaa_xlarge_2x.png" alt="iPhone 16e">
+                </div>
+                <div class="color-options">
+                    <span class="color white"></span>
+                    <span class="color black"></span>
+                </div>
+                <h3><span class="new">New</span> iPhone 16e</h3>
+                <p class="description">Latest iPhone. Greatest price.</p>
+                <p class="price">From ₹59900.00*<br>or ₹2496.00/mo. for 24 mo.‡</p>
+                <div class="buttons">
+                    <a href="#" class="learn-more">Learn more</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}

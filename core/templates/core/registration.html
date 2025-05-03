@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h2>Create Account</h2>
+            <p>Join us today</p>
+        </div>
+
+        <form action="" method="POST" novalidate class="register-form">
+            {% csrf_token %}
+
+            {% if mf.non_field_errors %}
+                {% for error in mf.non_field_errors %}
+                    <div class="error-message">{{error}}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% for m in mf %}
+            <div class="form-group">
+                {{m.label_tag}} 
+                {{m}} 
+                {% if m.errors %}
+                    <div class="field-error">{{m.errors}}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="register-button">
+                <span>Create Account</span>
+                <i class="fas fa-user-plus"></i>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+{% endblock content %}

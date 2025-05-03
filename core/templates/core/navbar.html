@@ -1,0 +1,80 @@
+<section id="header">
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url "index" %}">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo" width="30" height="30">
+                <span>iValueStore</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="iphoneDropdown" data-bs-toggle="dropdown">
+                            Products
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="iphoneDropdown">
+                            <li><a class="dropdown-item" href="{% url 'iphonecategories' %}">iPhone Series</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url "ipadcategories" %}">iPad Series</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url "macbookcategories" %}">Macbook Series</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav auth-nav">
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link user-welcome" href="{% url 'profile' %}">
+                            <i class="fas fa-user-circle"></i>
+                            Welcome {{ request.user.first_name }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registration' %}">
+                            <i class="fas fa-user-plus"></i>
+                            Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <a href="{% url 'viewcart' %}" class="cart-container">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">
+                            {% if request.user.is_authenticated %}
+                                {{ cart_count }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </span>
+                    </div>
+                    <span class="cart-text">Cart</span>
+                </a>
+
+                <form class="d-flex ms-3 search-form" role="search" method="GET" action="{% url 'search' %}">
+                    <input class="form-control custom-search-input" type="search" name="query" placeholder="Search Products..." aria-label="Search" required>
+                    <button class="btn custom-search-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</section>

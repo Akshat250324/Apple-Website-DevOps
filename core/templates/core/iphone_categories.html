@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}iPhone Categories{% endblock title %}
+
+{% block content %}
+<div class="gadget-sections">
+    <div class="headline-banner">
+        <h1>iPhone Models</h1>
+        <p>Choose your perfect iPhone</p>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="device-showcase">
+            {% for ic in ic %}
+            <a href="{% url 'appledetails' ic.id %}" class="device-card">
+                <div class="image-container">
+                    <img src="{{ ic.device_image.url }}" alt="{{ ic.name }}">
+                </div>
+                <div class="details-box">
+                    <h2>{{ ic.name }}</h2>
+
+                    <!-- Stock Status -->
+                    {% if ic.stock > 0 %}
+                        <p class="stock-status" style="color: green; font-weight: 600;">In Stock</p>
+                    {% else %}
+                        <p class="stock-status" style="color: red; font-weight: 600;">Out of Stock</p>
+                    {% endif %}
+
+                    <div class="pricing-container">
+                        <div class="pricing-details">
+                            <span class="current-cost">${{ ic.discounted_price }}</span>
+                            <span class="original-cost">${{ ic.original_price }}</span>
+                        </div>
+                        <span class="sale-badge">{{ ic.discount_percent }}% OFF</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

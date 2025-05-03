@@ -1,0 +1,403 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="dashboard-sidebar">
+        <nav class="side-nav">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h4>Welcome Back</h4>
+            </div>
+            <ul class="nav-menu">
+                <li>
+                    <a href="{% url 'profile' %}" class="menu-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'order' %}" class="menu-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'viewcart' %}" class="menu-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'address' %}" class="menu-link active">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Addresses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'changepassword' %}" class="menu-link">
+                        <i class="fas fa-lock"></i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Add New Address Form -->
+        <div class="content-section">
+            <div class="content-header">
+                <h1>Add New Address</h1>
+                <p>Add a new delivery location to your account</p>
+            </div>
+
+            <div class="form-container">
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    {% for f in mf %}
+                    <div class="form-field">
+                        <label>{{ f.label }}</label>
+                        <div class="input-wrapper">
+                            {{ f }}
+                            <i class="field-icon fas {% if f.name == 'name' %}fa-user{% elif f.name == 'address' %}fa-home{% elif f.name == 'city' %}fa-city{% elif f.name == 'state' %}fa-map{% else %}fa-map-pin{% endif %}"></i>
+                        </div>
+                        {% if f.errors %}
+                        <div class="field-error">
+                            {{ f.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Address
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Saved Addresses -->
+        <div class="content-section">
+            <div class="content-header">
+                <h2>Saved Addresses</h2>
+                <p>Manage your delivery locations</p>
+            </div>
+
+            <div class="address-grid">
+                {% for add in address %}
+                <div class="address-card">
+                    <div class="address-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="address-details">
+                        <h3>{{ add.name }}</h3>
+                        <p>{{ add.address }}</p>
+                        <div class="address-meta">
+                            <span><i class="fas fa-city"></i> {{ add.city }}</span>
+                            <span><i class="fas fa-map"></i> {{ add.state }}</span>
+                            <span><i class="fas fa-map-pin"></i> {{ add.pincode }}</span>
+                        </div>
+                    </div>
+                    <form action="{% url 'deleteaddress' add.id %}" method="POST" class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+        gap: 40px;
+        padding: 40px;
+    }
+
+    /* Sidebar Styles */
+    .dashboard-sidebar {
+        position: sticky;
+        top: 40px;
+        height: fit-content;
+    }
+
+    .side-nav {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+    }
+
+    .user-profile {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-avatar i {
+        font-size: 32px;
+        color: white;
+    }
+
+    .user-profile h4 {
+        color: white;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu-link {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .menu-link i {
+        font-size: 20px;
+        margin-right: 12px;
+    }
+
+    .menu-link.active,
+    .menu-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        transform: translateX(5px);
+    }
+
+    /* Main Content Styles */
+    .main-content {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(8, 17, 66, 0.06);
+    }
+
+    .content-section {
+        margin-bottom: 50px;
+    }
+
+    .content-header {
+        margin-bottom: 30px;
+    }
+
+    .content-header h1,
+    .content-header h2 {
+        font-size: 2.4rem;
+        color: #1e293b;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .content-header p {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    /* Form Styles */
+    .form-field {
+        margin-bottom: 25px;
+    }
+
+    .form-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: #1e293b;
+        font-weight: 500;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper input,
+    .input-wrapper textarea {
+        width: 100%;
+        padding: 14px 40px 14px 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper textarea:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        outline: none;
+    }
+
+    .field-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+    }
+
+    .field-error {
+        color: #ef4444;
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+
+    .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+    }
+
+    /* Address Grid Styles */
+    .address-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .address-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 25px;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .address-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .address-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .address-icon i {
+        color: white;
+        font-size: 24px;
+    }
+
+    .address-details h3 {
+        font-size: 1.2rem;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+
+    .address-details p {
+        color: #64748b;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+
+    .address-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .address-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .delete-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: #ef4444;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        background: #fef2f2;
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 1024px) {
+        .dashboard-container {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+
+        .dashboard-sidebar {
+            position: static;
+            margin-bottom: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 25px;
+        }
+
+        .content-header h1 {
+            font-size: 2rem;
+        }
+
+        .address-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

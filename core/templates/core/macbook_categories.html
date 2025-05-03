@@ -1,0 +1,53 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}MacBook Categories{% endblock title %}
+
+{% block content %}
+<div class="gadget-sections">
+    <div class="headline-banner">
+        <h1>MacBook Models</h1>
+        <p>Find your perfect MacBook</p>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="device-showcase">
+            {% if macs %}
+                {% for mac in macs %}
+                    <a href="{% url 'appledetails' mac.id %}" class="device-card {% if mac.stock == 0 %}out-of-stock{% endif %}">
+                        <div class="image-container">
+                            <img src="{{ mac.device_image.url }}" alt="Image of {{ mac.name }} MacBook model" loading="lazy">
+                        </div>
+                        <div class="details-box">
+                            <h2>{{ mac.name }}</h2>
+
+                            <!-- Stock Status -->
+                            {% if mac.stock > 0 %}
+                                <p class="stock-status in-stock">In Stock</p>
+                            {% else %}
+                                <p class="stock-status out-of-stock">Out of Stock</p>
+                            {% endif %}
+
+                            <div class="pricing-container">
+                                <div class="pricing-details">
+                                    <span class="current-cost">${{ mac.discounted_price }}</span>
+                                    <span class="original-cost">${{ mac.original_price }}</span>
+                                </div>
+                                <span class="sale-badge">
+                                    {% if mac.discount_percent %}
+                                        {{ mac.discount_percent }}% OFF
+                                    {% else %}
+                                        No Discount
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>No MacBooks available right now. Please check back later!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

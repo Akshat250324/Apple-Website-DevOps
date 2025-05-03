@@ -1,0 +1,484 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="luxury-wrapper">
+    {% if ord %}
+        {% for o in ord %}
+        <div class="luxury-receipt">
+            <!-- Premium Header -->
+            <div class="receipt-hero">
+                <div class="hero-content">
+                    <div class="premium-badge">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h1>Purchase Details</h1>
+                    <div class="order-meta">
+                        <div class="meta-item">
+                            <div class="meta-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="meta-text">
+                                <span>Order Date</span>
+                                <strong>10 October 2018</strong>
+                            </div>
+                        </div>
+                        <div class="meta-divider"></div>
+                        <div class="meta-item">
+                            <div class="meta-icon">
+                                <i class="fas fa-fingerprint"></i>
+                            </div>
+                            <div class="meta-text">
+                                <span>Transaction ID</span>
+                                <strong>012j1gvs356c</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elegant Purchase Details -->
+            <div class="purchase-details">
+                <div class="details-card">
+                    <div class="product-info">
+                        <div class="product-name">
+                            <h3>{{o.apple.name}}</h3>
+                            <span class="premium-tag">Premium Product</span>
+                        </div>
+                        <div class="product-price">${{o.apple.discounted_price}}</div>
+                    </div>
+                    <div class="shipping-info">
+                        <div class="shipping-label">
+                            <i class="fas fa-truck-fast"></i>
+                            <span>Express Shipping</span>
+                        </div>
+                        <div class="shipping-price">0$</div>
+                    </div>
+                    <div class="grand-total">
+                        <span>Total Amount</span>
+                        <div class="total-price">₹{{o.apple.discounted_price}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Status Tracker -->
+            <div class="status-section">
+                <h2>Order Journey</h2>
+                <div class="status-flow">
+                    <div class="flow-step {% if o.status == 'PENDING' or o.status == 'PROCESSING' or o.status == 'COMPLETED' %}active{% endif %}">
+                        <div class="step-indicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div class="indicator-line"></div>
+                        </div>
+                        <div class="step-details">
+                            <h4>Order Confirmed</h4>
+                            <p>Your order has been received</p>
+                        </div>
+                    </div>
+
+                    <div class="flow-step {% if o.status == 'PROCESSING' or o.status == 'COMPLETED' %}active{% endif %}">
+                        <div class="step-indicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-gear"></i>
+                            </div>
+                            <div class="indicator-line"></div>
+                        </div>
+                        <div class="step-details">
+                            <h4>In Progress</h4>
+                            <p>Preparing your order</p>
+                        </div>
+                    </div>
+
+                    <div class="flow-step {% if o.status == 'COMPLETED' %}active{% endif %}">
+                        <div class="step-indicator">
+                            <div class="indicator-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="step-details">
+                            <h4>Delivered</h4>
+                            <p>Order successfully delivered</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elegant Footer -->
+            <div class="luxury-footer">
+                <div class="support-card">
+                    <div class="support-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="support-text">
+                        <h4>24/7 Premium Support</h4>
+                        <a href="#" class="premium-link">Get Assistance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-orders">
+            <h2>There are currently no orders</h2>
+            <p>You have not placed any orders yet. Please browse our store and make a purchase.</p>
+        </div>
+    {% endif %}
+</div>
+
+
+<style>
+/* Add this to your existing CSS */
+.luxury-wrapper {
+    min-height: 100vh;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.luxury-receipt {
+    max-width: 1000px;
+    margin: 0 auto 50px;
+    background: white;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(8, 17, 66, 0.08);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.luxury-receipt:hover {
+    transform: translateY(-5px);
+}
+
+.receipt-hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    padding: 60px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.receipt-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M100 0H0v100h100V0zM9.091 50l13.637-13.637 4.545 4.545L13.636 54.545 9.091 50zm22.728 0l13.636-13.637 4.545 4.545L36.364 54.545 31.819 50zm22.727 0l13.636-13.637 4.545 4.545L59.091 54.545 54.546 50zm22.727 0l13.636-13.637 4.545 4.545L81.818 54.545 77.273 50z" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    opacity: 0.1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.premium-badge {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    backdrop-filter: blur(5px);
+}
+
+.premium-badge i {
+    font-size: 2.5rem;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 40px;
+    letter-spacing: -0.02em;
+}
+
+.order-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.meta-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.meta-text {
+    text-align: left;
+}
+
+.meta-text span {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.meta-text strong {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.meta-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.purchase-details {
+    padding: 40px;
+}
+
+.details-card {
+    background: #f8fafc;
+    border-radius: 24px;
+    padding: 30px;
+}
+
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.product-name h3 {
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin: 0 0 10px;
+}
+
+.premium-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #4f46e5;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+.shipping-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.shipping-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #64748b;
+}
+
+.shipping-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.grand-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.grand-total span {
+    font-size: 1.2rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.total-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+.status-section {
+    padding: 40px;
+}
+
+.status-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #1e293b;
+    margin-bottom: 40px;
+}
+
+.status-flow {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 20px 0;
+}
+
+.flow-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.step-indicator {
+    position: relative;
+    z-index: 2;
+}
+
+.indicator-icon {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #94a3b8;
+    margin: 0 auto;
+    transition: all 0.4s ease;
+}
+
+.flow-step.active .indicator-icon {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+}
+
+.indicator-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: #e2e8f0;
+    transform: translateY(-50%);
+}
+
+.flow-step:last-child .indicator-line {
+    display: none;
+}
+
+.step-details {
+    margin-top: 20px;
+}
+
+.step-details h4 {
+    color: #1e293b;
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+}
+
+.step-details p {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.luxury-footer {
+    padding: 40px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.support-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(8, 17, 66, 0.04);
+}
+
+.support-icon {
+    width: 50px;
+    height: 50px;
+    background: #4f46e5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.support-text h4 {
+    margin: 0 0 5px;
+    color: #1e293b;
+}
+
+.premium-link {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.premium-link:hover {
+    color: #6366f1;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .receipt-hero {
+        padding: 40px 20px;
+    }
+
+    .order-meta {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .meta-divider {
+        display: none;
+    }
+
+    .status-flow {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .indicator-line {
+        width: 2px;
+        height: 30px;
+        left: 50%;
+        top: 100%;
+        transform: translateX(-50%);
+    }
+}
+</style>
+{% endblock content %}
