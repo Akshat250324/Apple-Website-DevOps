@@ -11,6 +11,20 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            script {
+                def scannerHome = tool 'SonarScanner'
+
+                sh "${scannerHome}/bin/sonar-scanner " +
+                   "-Dsonar.projectKey=apple-website-ci-cd " +
+                   "-Dsonar.sources=."
+            }
+        }
+    }
+}
+
         stage('Docker Build') {
             steps {
                 sh 'docker compose build'
