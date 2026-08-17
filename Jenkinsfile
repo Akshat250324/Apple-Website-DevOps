@@ -12,11 +12,15 @@ pipeline {
 
         stage('SonarQube Analysis') {
     steps {
-        echo "=== SONAR TEST ==="
-        sh 'echo HELLO_FROM_SONAR_STAGE'
-        sh 'whoami'
-        sh 'pwd'
-        sh 'ls -la'
+        script {
+            def scannerHome = tool 'SonarQube-Scanner'
+
+            echo "Scanner Home: ${scannerHome}"
+
+            sh "ls -lah ${scannerHome}"
+            sh "ls -lah ${scannerHome}/bin"
+            sh "${scannerHome}/bin/sonar-scanner --version"
+        }
     }
 }
 
