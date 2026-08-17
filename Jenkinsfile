@@ -15,7 +15,7 @@ pipeline {
     steps {
         withSonarQubeEnv('SonarQube') {
             script {
-                def scannerHome = tool 'SonarScanner'
+                def scannerHome = tool 'SonarQube-Scanner'
 
                 sh "${scannerHome}/bin/sonar-scanner " +
                    "-Dsonar.projectKey=apple-website-ci-cd " +
