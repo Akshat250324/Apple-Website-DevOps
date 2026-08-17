@@ -12,14 +12,16 @@ pipeline {
 
         stage('SonarQube Analysis') {
     steps {
-        script {
-            def scannerHome = tool 'SonarQube-Scanner'
+        withSonarQubeEnv('SonarQube') {
+            script {
+                def scannerHome = tool 'SonarQube-Scanner'
 
-            echo "Scanner Home: ${scannerHome}"
-
-            sh "ls -lah ${scannerHome}"
-            sh "ls -lah ${scannerHome}/bin"
-            sh "${scannerHome}/bin/sonar-scanner --version"
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                      -Dsonar.projectKey=apple-website-ci-cd \
+                      -Dsonar.sources=.
+                """
+            }
         }
     }
 }
