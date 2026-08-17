@@ -17,12 +17,15 @@ pipeline {
             script {
                 def scannerHome = tool 'SonarQube-Scanner'
 
-                sh "${scannerHome}/bin/sonar-scanner " +
-                   "-Dsonar.projectKey=apple-website-ci-cd " +
-                   "-Dsonar.sources=."
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                      -Dsonar.projectKey=apple-website-ci-cd \
+                      -Dsonar.sources=.
+                """
             }
         }
     }
+}
 }
 
         stage('Docker Build') {
