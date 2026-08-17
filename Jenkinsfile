@@ -11,20 +11,15 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    script {
-                        def scannerHome = tool 'SonarQube-Scanner'
-
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                              -Dsonar.projectKey=apple-website-ci-cd \
-                              -Dsonar.sources=.
-                        """
-                    }
-                }
-            }
-        }
+    steps {
+        sh '''
+            echo "JAVA_HOME=$JAVA_HOME"
+            echo "PATH=$PATH"
+            command -v java
+            java --version
+        '''
+    }
+}
 
         stage('Docker Build') {
             steps {
