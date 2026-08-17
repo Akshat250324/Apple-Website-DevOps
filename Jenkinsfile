@@ -12,17 +12,11 @@ pipeline {
 
         stage('SonarQube Analysis') {
     steps {
-        withSonarQubeEnv('SonarQube') {
-            script {
-                def scannerHome = tool 'SonarQube-Scanner'
-
-                echo "Scanner Home: ${scannerHome}"
-
-                sh "ls -lah ${scannerHome}"
-                sh "ls -lah ${scannerHome}/bin"
-                sh "${scannerHome}/bin/sonar-scanner --version"
-            }
-        }
+        echo "=== SONAR TEST ==="
+        sh 'echo HELLO_FROM_SONAR_STAGE'
+        sh 'whoami'
+        sh 'pwd'
+        sh 'ls -la'
     }
 }
 
