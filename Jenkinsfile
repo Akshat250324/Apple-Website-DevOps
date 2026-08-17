@@ -6,25 +6,25 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/Akshat250324/Apple-Website-DevOps.git'
+                    url: 'https://github.com/Akshat250324/Apple-Website-DevOps.git'
             }
         }
 
         stage('SonarQube Analysis') {
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            script {
-                def scannerHome = tool 'SonarQube-Scanner'
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    script {
+                        def scannerHome = tool 'SonarQube-Scanner'
 
-                sh """
-                    ${scannerHome}/bin/sonar-scanner \
-                      -Dsonar.projectKey=apple-website-ci-cd \
-                      -Dsonar.sources=.
-                """
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                              -Dsonar.projectKey=apple-website-ci-cd \
+                              -Dsonar.sources=.
+                        """
+                    }
+                }
             }
         }
-    }
-}
 
         stage('Docker Build') {
             steps {
