@@ -17,8 +17,10 @@ pipeline {
                 def scannerHome = tool 'SonarQube-Scanner'
 
                 sh """
-                    export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-21.0.12.0.8.el9_8.x86_64
+                    export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-21.0.12.0.8-1.2.el9_8.x86_64
                     export PATH=\$JAVA_HOME/bin:\$PATH
+
+                    \$JAVA_HOME/bin/java --version
 
                     ${scannerHome}/bin/sonar-scanner \
                       -Dsonar.projectKey=apple-website-ci-cd \
