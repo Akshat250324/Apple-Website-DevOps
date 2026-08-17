@@ -12,12 +12,20 @@ pipeline {
 
         stage('SonarQube Analysis') {
     steps {
-        sh '''
-            echo "JAVA_HOME=$JAVA_HOME"
-            echo "PATH=$PATH"
-            command -v java
-            java --version
-        '''
+        withSonarQubeEnv('SonarQube') {
+            script {
+                def scannerHome = tool 'SonarQube-Scanner'
+
+                sh """
+                    export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-21.0.12.0.8.el9_8.x86_64
+                    export PATH=\$JAVA_HOME/bin:\$PATH
+
+                    ${scannerHome}/bin/sonar-scanner \
+                      -Dsonar.projectKey=apple-website-ci-cd \
+                      -Dsonar.sources=.
+                """
+            }
+        }
     }
 }
 
